@@ -5,10 +5,12 @@ export default async function handler(req, res) {
     try {
       const { idToken } = req.body;
       const decoded = await adminAuth.verifyIdToken(idToken);
+      // console.log("decoded uid:", decoded);
 
+      const isDev = process.env.NODE_ENV === "development";
       res.setHeader(
         "Set-Cookie",
-        `uid=${decoded.uid}; HttpOnly; Secure; SameSite=Strict; Max-Age=${60 * 60 * 24}`
+        `uid=${decoded.uid}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${60 * 60 * 24}${isDev ? "" : "; Secure"}`
       );
 
       return res.status(200).json({ success: true });

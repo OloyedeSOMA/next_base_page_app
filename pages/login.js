@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { auth } from "../utils/firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import CustomContainer from "../components/CustomContainer";
-import CustomForm from "../components/CustomForm";
+import CustomContainer from "./components/CustomContainer";
+import CustomForm from "./components/CustomForm";
 
 const Login = () => {
   const router = useRouter();
@@ -15,9 +15,9 @@ const Login = () => {
       const {user} = await signInWithEmailAndPassword(auth, email, password);
 
       const idToken = await user.getIdToken();
-      // console.log("ID Token before sending:", idToken);
+      console.log("ID Token before sending:", idToken);
 
-      const res = await fetch("/api/session", {
+      const res = await fetch(`/api/session`, {
         method:"POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idToken })
@@ -26,8 +26,7 @@ const Login = () => {
       const data = await res.json();
       if(!res.ok) throw new Error(data.error || "Failed to create session");
 
-      // window.location.href ="/todoPage";
-      router.push("/todoPage");
+      router.push("/todos");
     }catch (err){
       console.log(err);
       throw new Error(

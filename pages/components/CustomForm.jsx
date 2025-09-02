@@ -45,7 +45,7 @@ const CustomForm = ({ signup, onSubmit, includeName }) => {
     <>
       <div>
         <div align="center">
-          <Image src="/images/logo.png" alt="logo" width={20} height={30} />
+          <Image src="/logo.png" alt="logo" width={20} height={30} />
         </div>
         <h1 className="w-full flex text-center justify-center text-xl mb-4 mt-4">
           Welcome to Task Master

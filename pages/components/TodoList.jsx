@@ -1,13 +1,12 @@
+"use client";
 
-'use client';
-
-import React from 'react';
-import Link from 'next/link';
-import { DynamicFunctionsHook } from '../utils/hook/DynamicFunctionsHook';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React from "react";
+import Link from "next/link";
+import { useDynamicFunctions } from "@/utils/DynamicFunctions";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const TodoList = ({ todos }) => {
   const {
@@ -22,7 +21,7 @@ const TodoList = ({ todos }) => {
     handleEditSubmit,
     handleCancelEdit,
     handleDelete,
-  } = DynamicFunctionsHook(todos); //todos is passed in order to compare ids 
+  } = useDynamicFunctions(todos);
 
   const remainingTodos = todos.filter((todo) => !todo.completed).length;
 
@@ -48,19 +47,17 @@ const TodoList = ({ todos }) => {
           <div
             key={todo.id}
             className={`flex items-center justify-between p-3 rounded-lg ${
-              todo.completed ? 'bg-green-100' : 'bg-gray-100'
+              todo.completed ? "bg-green-100" : "bg-gray-100"
             }`}
           >
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleToggleComplete(todo.id, todo.completed)}
-                className={todo.completed ? 'text-green-600' : 'text-gray-500'}
+                className={todo.completed ? "text-green-600" : "text-gray-500"}
                 disabled={loadingTodos.has(todo.id) || isEditing === todo.id}
               >
                 {loadingTodos.has(todo.id) && isEditing !== todo.id ? (
                   <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                ) : todo.completed ? (
-                  <CheckCircleIcon/>
                 ) : (
                   <CheckCircleIcon />
                 )}
@@ -74,8 +71,8 @@ const TodoList = ({ todos }) => {
                     className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     autoFocus
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleEditSubmit(todo.id);
-                      if (e.key === 'Escape') handleCancelEdit();
+                      if (e.key === "Enter") handleEditSubmit(todo.id);
+                      if (e.key === "Escape") handleCancelEdit();
                     }}
                     disabled={loadingTodos.has(todo.id)}
                   />
@@ -87,7 +84,7 @@ const TodoList = ({ todos }) => {
                     {loadingTodos.has(todo.id) ? (
                       <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                     ) : (
-                      '✔'
+                      "✔"
                     )}
                   </button>
                   <button
@@ -99,7 +96,7 @@ const TodoList = ({ todos }) => {
                   </button>
                 </div>
               ) : (
-                <span className={todo.completed ? 'line-through text-gray-600' : ''}>
+                <span className={todo.completed ? "line-through text-gray-600" : ""}>
                   {todo.title}
                 </span>
               )}
@@ -110,12 +107,13 @@ const TodoList = ({ todos }) => {
                 className="text-gray-600 hover:text-blue-600"
                 disabled={loadingTodos.has(todo.id) || isEditing === todo.id}
               >
-                <EditIcon/>
+                <EditIcon />
               </button>
-              
-                {/* api routes with firebase slows the site down.. so i used this method to get my details in order to try and reduce server payload */}
-                <Link href={{pathname: `/todoPage/${todo.id}`,query: {id:todo.id, title: todo.title, completed: todo.completed }}}><VisibilityIcon className="text-gray-600 hover:text-red-600"/></Link>
-              
+              <Link
+                href={{ pathname: `/todos/${todo.id}`, query: { id: todo.id, title: todo.title, completed: todo.completed } }}
+              >
+                <VisibilityIcon className="text-gray-600 hover:text-red-600" />
+              </Link>
               <button
                 onClick={() => handleDelete(todo.id)}
                 className="text-gray-600 hover:text-red-600"
@@ -124,7 +122,7 @@ const TodoList = ({ todos }) => {
                 {loadingTodos.has(todo.id) ? (
                   <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                 ) : (
-                  <DeleteIcon/>
+                  <DeleteIcon />
                 )}
               </button>
             </div>
@@ -137,7 +135,7 @@ const TodoList = ({ todos }) => {
         )}
       </div>
       <div className="mt-4 text-sm text-gray-600">
-        {remainingTodos} item{remainingTodos !== 1 ? 's' : ''} left to complete
+        {remainingTodos} item{remainingTodos !== 1 ? "s" : ""} left to complete
       </div>
     </>
   );
