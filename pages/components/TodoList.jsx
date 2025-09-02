@@ -23,7 +23,8 @@ const TodoList = ({ todos }) => {
     handleDelete,
   } = useDynamicFunctions(todos);
 
-  const remainingTodos = todos.filter((todo) => !todo.completed).length;
+  const remainingTodos = (todos ?? []).filter((todo) => !todo.completed).length;
+
 
   if (listLoading) {
     return (
